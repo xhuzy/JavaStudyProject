@@ -5,6 +5,11 @@ import java.lang.reflect.Method;
 
 import com.youyou.dynamicProxy.log.Log;
 
+/**
+ * @author zz	
+ * dynamic Proxy Use JDK
+ *
+ */
 public class CaculateInvacationHandler implements InvocationHandler {
 
 	private Object target;
