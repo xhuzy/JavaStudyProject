@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd"
+	default-autowire="byName" default-lazy-init="true">
+	<!-- 对com包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能 -->
+	<context:component-scan base-package="com" />
+
+	<!-- 配置数据源 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property name="url">
+			<value>
+				jdbc:mysql://192.168.1.61/zyServiceRouteDB?characterEncoding=utf-8
+			</value>
+		</property>
+		<property name="username">
+			<value>betterdev</value>
+		</property>
+		<property name="password">
+			<value>better2008</value>
+		</property>
+	</bean>
+	<bean id="jdbcTemplete" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"></property>
+
+	</bean>
+
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 采用@Transactional注解方式使用事务 -->
+	<tx:annotation-driven transaction-manager="txManager" />
+</beans>
