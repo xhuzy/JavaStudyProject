@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyou.mybatisstudy.dao.IStudentDao">
+
+	<resultMap type="com.youyou.mybatisstudy.bo.Student" id="studentResultMap">
+		<id property="id" column="Student_ID" />
+		<result property="name" column="Student_Name" />
+		<result property="birthday" column="Birthday" />
+		<result property="studentBirthday" column="STUDENT_BIRTHDAY" />
+		<association property="studayClass" column="{classID=Class_ID}"
+			select="com.youyou.mybatisstudy.dao.IClassDao.getClassByID" />
+		<association property="headMaster" column="{teacherID=HeadMaster_ID}"
+			select="com.youyou.mybatisstudy.dao.ITeacherDao.getTeacherByID" />
+	</resultMap>
+	
+		<resultMap type="com.youyou.mybatisstudy.bo.Student" id="studentResultMap1">
+		<id property="id" column="Student_ID" />
+		<result property="name" column="Student_Name" />
+		<result property="birthday" column="Birthday" />
+		<result property="studentBirthday" column="STUDENT_BIRTHDAY" />
+		<association property="headMaster" column="{teacherID=HeadMaster_ID}"
+			select="com.youyou.mybatisstudy.dao.ITeacherDao.getTeacherByID" />
+	</resultMap>
+
+	<insert id="insertStudent" parameterType="com.youyou.mybatisstudy.bo.Student">
+		INSERT INTO
+		`MyBatisStudy`.`Student` (
+		`Student_ID`,
+		`Student_Name`,
+		`Birthday`,
+		`Class_ID`,
+		`HeadMaster_ID`
+		) VALUES (
+		#{id,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},
+		#{birthday,jdbcType=DATE},
+		#{studayClass.id,jdbcType=VARCHAR},
+		#{headMaster.id,jdbcType=VARCHAR})
+	</insert>
+
+	<select id="getStudentByID" parameterType="java.lang.String"
+		resultMap="studentResultMap">
+		SELECT * FROM `Student`
+		<where>
+			<if test="id!=null">
+				Student_ID=#{id}
+			</if>
+			<if test="id==null">
+				AND Student_ID=''
+			</if>
+		</where>
+	</select>
+	
+	<select id="getStudentByclassID" parameterType="java.lang.String"
+		resultMap="studentResultMap1">
+		SELECT * FROM `Student`
+		<where>
+			<if test="value!=null">
+				Class_ID=#{value}
+			</if>
+			<if test="value==null">
+				AND Class_ID=''
+			</if>
+		</where>
+	</select>
+
+
+</mapper>

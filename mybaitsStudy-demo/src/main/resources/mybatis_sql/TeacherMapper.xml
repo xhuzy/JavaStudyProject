@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyou.mybatisstudy.dao.ITeacherDao">
+
+	<resultMap type="com.youyou.mybatisstudy.bo.Teacher" id="teacherResultMap">
+		<id property="id" column="Teacher_ID" />
+		<result property="name" column="Teacher_Name" />
+		<result property="birthday" column="Birthday" />
+	</resultMap>
+	
+	<select id="getTeacherByID" parameterType="java.util.Map"
+		resultMap="teacherResultMap">
+		SELECT * FROM `Teacher`
+		<where>
+			<if test="teacherID!=null">
+				Teacher_ID=#{teacherID}
+			</if>
+			<if test="teacherID==null">
+				AND Teacher_ID=''
+			</if>
+		</where>
+	</select>
+</mapper>

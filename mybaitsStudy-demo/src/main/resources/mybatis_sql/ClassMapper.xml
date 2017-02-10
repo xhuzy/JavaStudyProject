@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youyou.mybatisstudy.dao.IClassDao">
+
+	<resultMap type="com.youyou.mybatisstudy.bo.Class" id="classResultMap">
+		<id property="id" column="Class_ID" />
+		<result property="name" column="Class_Name" />
+		<association property="headMaster" column="HeadMaster_ID"
+			resultMap="com.youyou.mybatisstudy.dao.ITeacherDao.teacherResultMap" />
+	</resultMap>
+
+	<resultMap type="com.youyou.mybatisstudy.bo.Class" id="classResultMapWithStudent">
+		<id property="id" column="Class_ID" />
+		<result property="name" column="Class_Name" />
+		<collection property="lstStudent" column="Class_ID"
+			javaType="ArrayList" ofType="com.youyou.mybatisstudy.bo.Student"
+			select="com.youyou.mybatisstudy.dao.IStudentDao.getStudentByclassID" />
+	</resultMap>
+
+	<select id="getClassByID" parameterType="java.lang.String"
+		resultMap="classResultMapWithStudent">
+		SELECT * FROM `Class`
+		<where>
+			<if test="value!=null">
+				Class_ID=#{value}
+			</if>
+			<if test="value == null">
+				AND Class_ID=''
+			</if>
+		</where>
+	</select>
+</mapper>
